@@ -1,6 +1,7 @@
 from collections import Counter
 import random
 from sklearn.ensemble import RandomForestRegressor
+import streamlit as st
 
 # Sample historical data
 data = [
@@ -19,6 +20,7 @@ data = [
     [10, 25, 51, 52, 63, 1],
     [10, 12, 22, 36, 50, 4]
 ]
+
 
 def weighted_frequency_analysis(data):
     recent_data = data[-10:]
@@ -48,15 +50,19 @@ def predict_next_combination(data, model):
     return list(map(int, ml_prediction[0]))
 
 def main():
-    predictions = []
-    model = train_ml_model(data)
-    for _ in range(5):
-        prediction = predict_next_combination(data, model)
-        predictions.append(prediction)
-        if prediction in data:
-            data.remove(prediction)
-    for i, pred in enumerate(predictions, 1):
-        print(f"Prediction {i}: {pred}")
+    st.title("Lottery Number Predictor")
+    
+    if st.button("Predict Top 5 Combinations"):
+        predictions = []
+        model = train_ml_model(data)
+        for _ in range(5):
+            prediction = predict_next_combination(data, model)
+            predictions.append(prediction)
+            if prediction in data:
+                data.remove(prediction)
+        
+        for i, pred in enumerate(predictions, 1):
+            st.write(f"Prediction {i}: {pred}")
 
 if __name__ == "__main__":
     main()
