@@ -97,7 +97,7 @@ def predict_next_combination(data, model):
     # Introduce some randomness to get varied predictions
     random.shuffle(common_numbers)
     
-    ml_prediction = model.predict([common_numbers])
+    ml_prediction = model.predict(np.array([common_numbers]))
     return list(map(int, ml_prediction[0]))
 
 def main():
