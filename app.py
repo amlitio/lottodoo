@@ -83,7 +83,7 @@ def bigram_analysis(data):
 
 def train_ml_model(data):
     X = [sublist[:-1] for sublist in data[:-1]]
-    y = [sublist[:-1] for sublist in data[1:]]
+    y = [sublist[-1] for sublist in data[1:]]  # Assuming the last number is the target
     model = RandomForestRegressor()
     model.fit(X, y)
     return model
@@ -97,12 +97,8 @@ def predict_next_combination(data, model):
     # Introduce some randomness to get varied predictions
     random.shuffle(common_numbers)
     
-    # Ensure the input shape is correct
-    input_data = np.array([common_numbers])
-    ml_prediction = model.predict(input_data)
-    
-    # Ensure the output is in the expected format
-    return list(map(int, ml_prediction[0]))
+    ml_prediction = model.predict([common_numbers])
+    return [int(num) for num in ml_prediction]
 
 def main():
     st.title("Lottery Number Predictor")
