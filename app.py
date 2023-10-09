@@ -1,5 +1,6 @@
 from collections import Counter
 import random
+import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 import streamlit as st
 
@@ -103,13 +104,11 @@ def main():
     st.title("Lottery Number Predictor")
     
     if st.button("Predict Top 5 Combinations"):
-        predictions = []
+        predictions = set()
         model = train_ml_model(data)
-        for _ in range(5):
+        while len(predictions) < 5:
             prediction = predict_next_combination(data, model)
-            predictions.append(prediction)
-            if prediction in data:
-                data.remove(prediction)
+            predictions.add(tuple(prediction))
         
         for i, pred in enumerate(predictions, 1):
             st.write(f"Prediction {i}: {pred}")
