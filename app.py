@@ -46,6 +46,10 @@ def predict_next_combination(data, model):
     bigram_counts = bigram_analysis(data)
     combined_counts = weighted_counts + bigram_counts
     common_numbers = [item[0] for item in combined_counts.most_common(5)]
+    
+    # Introduce some randomness to get varied predictions
+    random.shuffle(common_numbers)
+    
     ml_prediction = model.predict([common_numbers])
     return list(map(int, ml_prediction[0]))
 
